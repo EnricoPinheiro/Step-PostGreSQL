@@ -1,0 +1,133 @@
+CREATE TABLE capitais (  
+nome       
+text,  
+populacao  real,  
+altitude   int,    -- (em pés)  
+estado     char(2) 
+);
+CREATE TABLE interior (  
+nome       text,  
+populacao  real,  
+altitude   int     -- (em pés) 
+);
+
+=====================  =================================
+
+CREATE TABLE cidades (  
+nome       text,  
+populacao  real,  
+altitude   int     -- (em pés)
+ );
+
+CREATE TABLE capitais (  
+estado char(2)) INHERITS (cidades); 
+
+INSERT INTO cidades VALUES ('Rio de Janeiro', 20000.00, 600);
+INSERT INTO cidades VALUES ('São Paulo', 30000.00, 800);
+INSERT INTO capitais VALUES ('RJ',20000.00, 600);
+INSERT INTO capitais VALUES ('SP',30000.00, 800);
+
+DELETE FROM capitais WHERE nome = 'RJ';
+
+===============================================================
+
+CREATE TABLE cidades (
+cidade  varchar(80) PRIMARY KEY,
+localizacao point
+);
+CREATE TABLE clima (
+cidade varchar(80) references cidades(cidade),
+
+);
+
+========= Consuta todas as cidades incluindo as capitais ================
+
+Por exemplo, a consulta abaixo retorna os nomes de todas as cidades, 
+incluindo as capitais dos estados, localizadas a uma altitude superior a 500 pés: 
+
+SELECT nome, altitude  FROM cidades  WHERE altitude > 500;
+
+UPDATE cidades SET ponto_turistico = 'Rio de Janeiro' WHERE ponto_turistico = 'Bondinho';
+
+
+============================= consulta ONLY ========================
+Por outro lado, a consulta abaixo traz todas as cidades que não 
+são capitais de estado e estão situadas a uma altitude superior a 500 pés: 
+
+SELECT nome, altitude   FROM ONLY capitais    WHERE altitude > 500;
+ 
+Nesta consulta a palavra chave ONLY antes de cidades indica que a consulta 
+deve ser efetuada apenas na tabela cidades, sem incluir as tabelas abaixo 
+de cidades na hierarquia de herança. Muitos comandos mostrados até agora — 
+SELECT, UPDATE e DELETE — permitem usar a notação ONLY. 
+
+====Alterando a estrutura de uma tabela ========
+
+
+==== adicinar coluna ===
+ALTER TABLE cidades ADD COLUMN ponto_turistico text;
+ 
+======Remover coluna =====
+ALTER TABLE cidades DROP COLUMN ponto_turitico;
+
+===== ADICIONANDO RESTRIÇÃO ======
+ALTER TABLE cidades ADD CONSTRAINT 	nome UNIQUE (nome);
+
+ALTER TABLE cidades ADD FOREIGN KEY (nome) REFERENCES capitais;
+
+========= Restrição não nullo ======
+
+ALTER TABLE cidades ALTER COLUMN altitude SET NOT NULL;
+
+
+Criar uma nova cidade e depois faça o insert sem inserir o valor na coluna altitude
+
+
+==== Remover restrição ================
+ALTER TABLE cidades ALTER COLUMN altitude DROP NOT NULL;
+
+====== USANDO A CONDIÇÃO LIKE ======
+SELECT cidades from cidades WHERE nome like 'S%';
+
+
+Adicionar as tabelas id e FOREIGN KEY 
+============ =============================
+CREATE TABLE cidades (
+id smallint PRIMARY KEY NOT NULL,
+nome text,
+populacao real,
+altitude int
+);
+
+CREATE TABLE capitais (
+estado char(2) ) INHERITS (cidades);
+
+INSERT INTO cidades VALUES (1, 'Rio de Janeiro', 20000.00, 600);
+INSERT INTO cidades VALUES (2, 'São Paulo', 30000.00, 800);
+
+INSERT INTO capitais VALUES (1, 'RJ',20000.00, 600);
+INSERT INTO capitais VALUES (2, 'SP',30000.00, 800);
+
+ALTER TABLE cidades ADD COLUMN ponto_turistico text;
+
+UPDATE cidades
+SET ponto_turistico = 'Cristo Redentor'
+WHERE nome = 'Rio de Janeiro';
+
+UPDATE cidades
+SET ponto_turistico = 'Parque do Ibirapuera'
+WHERE nome = 'São Paulo';
+
+ALTER TABLE cidades ALTER COLUMN altitude SET NOT NULL;
+
+ALTER TABLE cidades ADD CONSTRAINT id UNIQUE (id);
+
+ALTER TABLE capitais ADD FOREIGN KEY (id) REFERENCES cidades;
+
+
+
+
+
+
+
+

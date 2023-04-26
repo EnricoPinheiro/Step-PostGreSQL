@@ -1,0 +1,315 @@
+==== limpar tela ===
+\! cls + Enter
+
+==== vera versão =====
+ SELECT version()
+====criar usuario ===
+
+CREATE USER jonathan;
+CREATE USER davide WITH PASSWORD 'jw8s0F4';
+CREATE USER miriam WITH PASSWORD 'jw8s0F4' VALID UNTIL '2005-01-01';
+CREATE USER manuel WITH PASSWORD 'jw8s0F4' CREATEDB;
+
+createuser -dPS pedro
+-d -> pode criar bancos
+P -> para já pedir a senha
+s -> para ser super usuário
+
+
+
+
+postgres=> DROP ROLE pedro;
+ERROR:  permission denied to drop role
+
+
+
+==== criar tabela ===
+
+CREATE TABLE weather (    
+city varchar(80), 
+temp_lo int,  -- low temperature    
+temp_hi int,  -- high temperature    
+prcp  real,   -- precipitation   
+date            date 
+);
+
+CREATE TABLE cities (   
+ name  varchar(80),  
+ location  point 
+ );
+
+INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');
+INSERT INTO cities VALUES ('San Francisco', '(-194.0, 53.0)');
+INSERT INTO cities VALUES ('Hayward', '(-198.0, 58.0)');
+
+
+
+INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');
+INSERT INTO weather (city, temp_lo, temp_hi, prcp, date) VALUES ('San Francisco', 43, 57, 0.0, '1994-11-29');
+INSERT INTO weather (date, city, temp_hi, temp_lo)    VALUES ('1994-11-29', 'Hayward', 54, 37);
+
+
+
+
+===para recuperar todas as linhas da tabela === 
+SELECT city FROM weather;  // antes da palavra from referece as colunas tabelas. depois da palavra from a tabela
+SELECT city, temp_lo, temp_hi FROM weather;
+
+
+==== Você pode solicitar que os resultados de uma consulta sejam retornados em ordem de classificação =========
+SELECT * FROM weather ORDER BY city; //ordena pela coluna city
+SELECT * FROM weather ORDER BY city, temp_lo;
+SELECT DISTINCT city FROM weather; // Você pode solicitar que as linhas duplicadas sejam removidas do resultado de uma consulta
+SELECT DISTINCT city FROM weather ORDER BY city;
+
+=== Junções entre tabelas =========
+
+Até agora, nossas consultas acessaram apenas uma tabela por vez. 
+As consultas podem acessar várias tabelas ao mesmo tempo ou acessar a 
+mesma tabela de forma que várias linhas da tabela sejam processadas ao mesmo tempo. 
+As consultas que acessam várias tabelas (ou várias instâncias da mesma tabela) 
+ao mesmo tempo são chamadas de consultas de junção. Eles combinam linhas de uma 
+tabela com linhas de uma segunda tabela, com uma expressão especificando quais 
+linhas devem ser emparelhadas. Por exemplo, para retornar todos os registros 
+meteorológicos juntamente com a localização da cidade associada, o banco de 
+dados precisa comparar a coluna cidade de cada linha da tabela meteorológica 
+com a coluna nome de todas as linhas da tabela cidades e selecionar os pares de 
+linhas em que esses valores correspondem 3 Isso seria feito pela seguinte consulta:
+
+SELECT * FROM weather JOIN cities ON city = name;
+SELECT city, temp_lo, temp_hi FROM weather JOIN cities ON city = name;
+
+
+
+
+SELECT * FROM weather;
+SELECT city, temp_lo, temp_hi, prcp, date FROM weather;
+SELECT city, (temp_hi+temp_lo)/2 AS temp_avg, date FROM weather;
+SELECT * FROM weather    WHERE city = 'San Francisco' AND prcp > 0.0;
+SELECT * FROM weather    WHERE city = 'San Francisco' AND prcp < 0.25;
+
+===== funções agregadas =======   
+Como a maioria dos outros produtos de banco de dados relacional, 
+o PostgreSQL suporta funções agregadas. Uma função agregada calcula 
+um único resultado de várias linhas de entrada. Por exemplo, 
+há agregações para calcular a contagem, soma, média (média), max (máximo) e min (mínimo) em um conjunto de linhas.
+Como exemplo, podemos encontrar a leitura de baixa temperatura mais alta em qualquer lugar
+
+
+SELECT min(temp_lo) FROM weather;
+
+
+
+Isso não funcionará, pois o máximo agregado não pode ser usado na cláusula WHERE. 
+(Essa restrição existe porque a cláusula WHERE determina quais linhas serão incluídas 
+no cálculo de agregação; portanto, obviamente, ela deve ser avaliada antes que as 
+funções de agregação sejam calculadas.) No entanto, como costuma ser o caso, 
+a consulta pode ser reformulada para obter o resultado desejado , aqui usando uma subconsulta
+
+SELECT city FROM weather WHERE temp_lo = max(temp_lo);
+
+Isso está correto porque a subconsulta é uma computação independente 
+que calcula seu próprio agregado separadamente do que está 
+acontecendo na consulta externa
+
+SELECT city FROM weather WHERE temp_lo = (SELECT max(temp_lo) FROM weather); 
+
+SELECT city FROM weather WHERE temp_lo = (SELECT min(temp_lo) FROM weather); 
+
+Agregados também são muito úteis em combinação com cláusulas GROUP BY. 
+Por exemplo, podemos obter a máxima baixa temperatura observada em cada cidade com
+
+SELECT city, min(temp_lo) FROM weather GROUP BY city;
+
+GROUP BY 
+Nos dá uma linha de saída por cidade. 
+Cada resultado agregado é calculado sobre 
+as linhas da tabela correspondentes a essa 
+cidade. Podemos filtrar essas linhas agrupadas 
+usando HAVING
+
+SELECT city, min(temp_lo) FROM weather GROUP BY city HAVING max(temp_lo) < 40 ;
+
+=============================================
+
+que nos dá os mesmos resultados apenas para as cidades que 
+têm todos os valores de temp_lo abaixo de 40. Finalmente, se nos 
+importamos apenas com cidades cujos nomes começam com “S”, podemos fazer:
+
+SELECT city, max(temp_lo) FROM weather WHERE city LIKE 'S%' GROUP BY city HAVING max(temp_lo) < 40 ;
+
+É importante entender a interação entre os agregados 
+e as cláusulas WHERE e HAVING do SQL. 
+A diferença fundamental entre WHERE e HAVING é esta: 
+WHERE seleciona linhas de entrada antes que os grupos e agregados 
+sejam computados (assim, ele controla quais linhas vão para a saida agregada), 
+enquanto HAVING seleciona linhas de grupo após os grupos e agregados serem computados. 
+Assim, a cláusula WHERE não deve conter funções agregadas; 
+não faz sentido tentar usar um agregado para determinar 
+quais linhas serão entradas para os agregados. 
+Por outro lado, a cláusula HAVING sempre contém funções agregadas. 
+(Estritamente falando, você tem permissão para escrever uma cláusula HAVING que não usa agregações, 
+mas raramente é útil. A mesma condição pode ser usada de forma mais eficiente no estágio WHERE.)
+
+
+======= update ======
+
+UPDATE weather SET temp_hi = temp_hi - 2,  temp_lo = temp_lo - 2  WHERE date > '1994-11-28';
+
+====== Deletions ========
+
+DELETE FROM weather WHERE city = 'Hayward';
+
+Fazer update na coluna salario, nome e Cargo
+Deletar um nome especifico ex: funcionáro que foi demitido
+salario > 3000
+filtrar essas linhas agrupadas usando HAVING
+combinação com cláusulas GROUP BY
+
+
+http://pgdocptbr.sourceforge.net/pg80/sql-alteruser.html
+
+
+
+==================== Views ======================
+
+Consulte as consultas na Seção 2.6. Suponha que a lista combinada de registros meteorológicos 
+e localização da cidade seja de interesse particular para seu aplicativo, mas você não deseja 
+digitar a consulta sempre que precisar. Você pode criar uma visualização sobre a consulta, 
+que dá um nome à consulta à qual você pode se referir como uma tabela comum:
+
+
+CREATE VIEW myview AS    
+SELECT name, temp_lo, temp_hi, prcp, date, location        
+FROM weather, cities        
+WHERE city = name;
+
+SELECT * FROM myview;
+
+==============================================
+
+Fazer uso liberal de visualizações é um aspecto fundamental do bom design de banco de dados SQL. 
+As visualizações permitem encapsular os detalhes da estrutura de suas tabelas, 
+que podem mudar à medida que seu aplicativo evolui, por trás de interfaces consistentes.
+As visualizações podem ser usadas em praticamente qualquer lugar em que uma 
+tabela real possa ser usada. Construir visualizações sobre outras visualizações não é incomum.
+
+===================     Foreign Keys  ==========================
+
+Lembre-se das tabelas de clima e cidades do Capítulo 2. 
+Considere o seguinte problema: Você deseja certificar-se 
+de que ninguém possa inserir linhas na tabela de clima que 
+não tenham uma entrada correspondente na tabela de cidades. 
+Isso se chama manter a integridade referencial de seus dados. 
+Em sistemas de banco de dados simplistas, isso seria implementado 
+(se for o caso) primeiro examinando a tabela de cidades 
+para verificar se existe um registro correspondente e, 
+em seguida, inserindo ou rejeitando os novos registros 
+meteorológicos. Essa abordagem tem vários problemas e é 
+muito inconveniente, então o PostgreSQL pode fazer 
+isso para você. A nova declaração das tabelas ficaria assim:
+
+
+CREATE TABLE cities (        
+name     varchar(80) primary key,        
+location point 
+);
+
+CREATE TABLE weather (        
+city      varchar(80) references cities(name),        
+temp_lo   int,
+temp_hi   int,        
+prcp      real,        
+date      date 
+);
+
+ctrl \ dt
+
+DROP TABLE weather CASCADE;
+DROP TABLE IF EXISTS cities;
+
+Agora tente inserir um registro inválido
+
+INSERT INTO weather VALUES ('Berkeley', 45, 53, 0.0, '1994-11-28');
+
+ERROR:  insert or update on table "weather" violates foreign key constraint "weather_city_fkey" DETAIL:  Key (city)=(Berkeley) is not present in table "cities".
+
+O comportamento das chaves estrangeiras pode ser ajustado com precisão ao seu aplicativo. 
+Não iremos além deste simples exemplo neste tutorial, mas apenas encaminhá-lo 
+para o Capítulo 5 para obter mais informações. Fazer o uso correto de chaves estrangeiras 
+definitivamente melhorará a qualidade de seus aplicativos de banco de dados, 
+então você é fortemente encorajado a aprender sobre eles.
+
+======== Inheritance ============
+
+Herança é um conceito de bancos de dados orientados a objetos. 
+Abre novas possibilidades interessantes de design de banco de dados.
+Vamos criar duas tabelas: Uma tabela cidades e uma tabela capitais. 
+Naturalmente, as capitais também são cidades, então você quer alguma 
+forma de mostrar as capitais implicitamente ao listar todas as cidades. 
+Se você for realmente esperto, pode inventar algum esquema como este:
+
+CREATE TABLE capitals (  
+name       text,  
+population real,  
+elevation  int,  -- (in ft) 
+state      char(2)
+ );
+ 
+CREATE TABLE non_capitals (  
+name       text,  
+population real,  
+elevation  int     -- (in ft) 
+);
+================================
+
+CREATE TABLE cities (  
+name       text,  
+population real,  
+elevation int
+);
+
+
+CREATE TABLE capitals (  
+state      char(2) UNIQUE NOT NULL )     
+INHERITS (cities);
+
+
+
+INSERT INTO cities VALUES ('San Francisco', 20000.00, 600);
+
+INSERT INTO cities VALUES ('Madison', 40000.00, 1953);
+
+INSERT INTO cities VALUES ('Mariposa ', 50000.00, 845);
+
+
+
+SELECT name, elevation  FROM cities  WHERE elevation > 500;
+
+Por exemplo, a consulta a seguir encontra os nomes de todas as cidades, 
+incluindo as capitais dos estados, localizadas a uma altitude superior a 500 pés:
+
+==========================================================================================
+
+SELECT name, elevation  FROM ONLY cities  WHERE elevation > 500; // apenas na tabela cities
+
+
+Aqui o ONLY antes das cidades indica que a consulta deve ser executada apenas na 
+tabela de cidades e não nas tabelas abaixo das cidades na hierarquia de herança. 
+
+
+Por outro lado, a consulta a seguir encontra todas as cidades que não são capitais de estado e 
+estão situadas a uma altitude superior a 500 pés:
+ 
+CREATE VIEW cities AS  SELECT name, population, elevation FROM capitals    
+UNION  SELECT name, population, elevation FROM non_capitals;
+
+
+
+
+
+
+
+
+
+

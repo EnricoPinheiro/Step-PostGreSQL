@@ -1,0 +1,32 @@
+SELECT min(temp_lo) FROM weather;
+
+SELECT city FROM weather WHERE temp_lo = (SELECT min(temp_lo) FROM weather);
+
+SELECT city FROM weather WHERE temp_lo = (SELECT max(temp_lo) FROM weather);
+
+SELECT city, max(temp_lo) FROM weather GROUP BY city;
+
+SELECT city, min(temp_lo) FROM weather GROUP BY city HAVING max(temp_lo) < 40;
+
+======= UPDATE =======
+
+UPDATE weather SET temp_hi = temp_hi - 2, temp_lo = temp_lo - 2 WHERE date > '1994-11-28';
+
+SELECT * FROM weather;
+
+======= DELETE =======
+
+DELETE FROM weather WHERE city = 'Hayward';
+
+SELECT * FROM weather;
+
+Fazer update na coluna salario, nome e cargo;
+Deletar um nome específico ex: funcionário que foi demitido;
+
+UPDATE cargo SET salario = 4500 WHERE salario < 10000;
+
+UPDATE funcionario SET nome = 'Jorge Santos' WHERE nome = 'Pedro Sampaio';
+
+UPDATE cargo SET cargo = 'Advogado' WHERE cargo = 'DJ';
+
+DELETE FROM funcionario WHERE nome = 'Sandro Peixoto';

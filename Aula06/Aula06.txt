@@ -1,0 +1,24 @@
+Aula 06
+
+==========================
+
+CREATE TABLE produtos (
+cod_prod INTEGER,
+nome text,
+preco NUMERIC DEFAULT 9.99
+);
+
+INSERT INTO produtos (cod_prod, nome, preco) VALUES (1, 'queijo', DEFAULT);
+INSERT INTO produtos (nome, preco, cod_prod) VALUES ('Pão', 7.7,2);
+
+UPDATE produtos SET preco - preco * 1.10;
+
+ALTER TABLE COLUMN preco SET DEFAULT 8.50;
+
+DELETE FROM produtos WHERE preco = 10.9890;
+
+ALTER TABLE produtos ADD PRIMARY KEY (cod_prod);
+
+ALTER TABLE produtos ADD COLUMN descricao text;
+
+ALTER TABLE produtos ALTER COLUMN cod_prod;

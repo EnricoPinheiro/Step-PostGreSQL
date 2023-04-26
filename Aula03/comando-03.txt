@@ -1,0 +1,96 @@
+==== limpar tela ===
+\! cls + Enter
+
+==== vera versão =====
+ SELECT version()
+====criar usuario ===
+
+CREATE USER jonathan;
+CREATE USER davide WITH PASSWORD 'jw8s0F4';
+CREATE USER miriam WITH PASSWORD 'jw8s0F4' VALID UNTIL '2005-01-01';
+CREATE USER manuel WITH PASSWORD 'jw8s0F4' CREATEDB;
+
+createuser -dPS pedro
+-d -> pode criar bancos
+P -> para já pedir a senha
+s -> para ser super usuário
+
+
+
+
+postgres=> DROP ROLE pedro;
+ERROR:  permission denied to drop role
+
+
+
+==== criar tabela ===
+
+CREATE TABLE weather (    
+city varchar(80), 
+temp_lo int,  -- low temperature    
+temp_hi int,  -- high temperature    
+prcp  real,   -- precipitation   
+date            date 
+);
+
+CREATE TABLE cities (   
+ name  varchar(80),  
+ location  point 
+ );
+
+INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');
+INSERT INTO cities VALUES ('San Francisco', '(-194.0, 53.0)');
+INSERT INTO cities VALUES ('Hayward', '(-198.0, 58.0)');
+
+
+
+INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');
+INSERT INTO weather (city, temp_lo, temp_hi, prcp, date) VALUES ('San Francisco', 43, 57, 0.0, '1994-11-29');
+INSERT INTO weather (date, city, temp_hi, temp_lo)    VALUES ('1994-11-29', 'Hayward', 54, 37);
+
+
+
+
+===para recuperar todas as linhas da tabela === 
+SELECT city FROM weather;  // antes da palavra from referece as colunas tabelas. depois da palavra from a tabela
+SELECT city, temp_lo, temp_hi FROM weather;
+
+
+==== Você pode solicitar que os resultados de uma consulta sejam retornados em ordem de classificação =========
+SELECT * FROM weather ORDER BY city; //ordena pela coluna city
+SELECT * FROM weather ORDER BY city, temp_lo;
+SELECT DISTINCT city FROM weather; // Você pode solicitar que as linhas duplicadas sejam removidas do resultado de uma consulta
+SELECT DISTINCT city FROM weather ORDER BY city;
+
+=== Junções entre tabelas =========
+
+Até agora, nossas consultas acessaram apenas uma tabela por vez. 
+As consultas podem acessar várias tabelas ao mesmo tempo ou acessar a 
+mesma tabela de forma que várias linhas da tabela sejam processadas ao mesmo tempo. 
+As consultas que acessam várias tabelas (ou várias instâncias da mesma tabela) 
+ao mesmo tempo são chamadas de consultas de junção. Eles combinam linhas de uma 
+tabela com linhas de uma segunda tabela, com uma expressão especificando quais 
+linhas devem ser emparelhadas. Por exemplo, para retornar todos os registros 
+meteorológicos juntamente com a localização da cidade associada, o banco de 
+dados precisa comparar a coluna cidade de cada linha da tabela meteorológica 
+com a coluna nome de todas as linhas da tabela cidades e selecionar os pares de 
+linhas em que esses valores correspondem 3 Isso seria feito pela seguinte consulta:
+
+SELECT * FROM weather JOIN cities ON city = name;
+SELECT city, temp_lo, temp_hi FROM weather JOIN cities ON city = name;
+
+
+
+
+SELECT * FROM weather;
+SELECT city, temp_lo, temp_hi, prcp, date FROM weather;
+SELECT city, (temp_hi+temp_lo)/2 AS temp_avg, date FROM weather;
+SELECT * FROM weather    WHERE city = 'San Francisco' AND prcp > 0.0;
+SELECT * FROM weather    WHERE city = 'San Francisco' AND prcp < 0.25;
+
+
+
+
+
+
+http://pgdocptbr.sourceforge.net/pg80/sql-alteruser.html

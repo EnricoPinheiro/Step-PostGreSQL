@@ -1,0 +1,30 @@
+Criar as tabelas Livro e autor  utilizando chave primaria e estrangeira
+Tabela Autor  : 
+id, nome, 
+Tabela Livro : 
+Titulo, ano de publicação, editora
+
+Aplicar ADD COLUMN, SET NOT NULL, ADD CONSTRAINT, ADD FOREIGN KEY , JOIN 
+
+===========================================
+
+CREATE TABLE livros (  
+titulo     varchar(50),  
+anopubli   int(4),  
+autor    varchar(50)      
+ )INHERITS (autores);
+
+CREATE TABLE autores (  
+id     int NOT NULL SERIAL PRIMARY KEY,    
+nome   varchar(50)   
+ );
+
+ALTER TABLE livros ADD COLUMN editora;
+
+ALTER TABLE livros ALTER COLUMN editora SET NOT NULL;
+
+ALTER TABLE autores ADD CONSTRAINT id UNIQUE (id);
+
+ALTER TABLE livros ADD FOREIGN KEY (id) REFERENCES livros;
+
+SELECT * FROM autores JOIN livros ON nome = autor;

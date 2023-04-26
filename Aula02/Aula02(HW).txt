@@ -1,0 +1,12 @@
+CREATE TABLE funcionarios (
+nome varchar(50),
+idade int(3),
+sexo varchar(50)
+);
+
+CREATE TABLE cargo (
+cargo varchar(50),
+salario int
+);
+
+SELECT * FROM funcionarios JOIN cargo

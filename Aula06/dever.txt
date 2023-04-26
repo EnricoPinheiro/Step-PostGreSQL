@@ -1,0 +1,2 @@
+adicionar restrição a uma coluna de uma tabela -> SET NOT NULL      
+inserir a chave primaria : utilizar -> ALTER TABLE, ADD PRIMARY KEY

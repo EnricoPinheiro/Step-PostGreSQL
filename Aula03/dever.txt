@@ -1,0 +1,4 @@
+Criar as tabelas funcionario e cargo
+Tabela funcionario , nome, idade, sexo
+Tabela cargo , cargo , salario
+Fazer as seguintes consultas : Select * from , Join, Média dos salarios, mostrar funcionario, salario e cargo

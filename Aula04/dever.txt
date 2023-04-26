@@ -1,0 +1,8 @@
+
+criar uma visualização sobre a consulta da tabela cities
+
+CREATE VIEW visucities AS
+ SELECT name, population, elevation
+ FROM cities
+ WHERE city = name;
+SELECT * FROM visucities;

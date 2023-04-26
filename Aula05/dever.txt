@@ -1,0 +1,7 @@
+Criar as tabelas Livro e autor  utilizando chave primaria e estrangeira
+Tabela Autor  : 
+id, nome, 
+Tabela Livro : 
+Titulo, ano de publicação, editora
+
+Aplicar ADD COLUMN, SET NOT NULL, ADD CONSTRAINT, ADD FOREIGN KEY , JOIN 

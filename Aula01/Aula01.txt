@@ -1,0 +1,47 @@
+CREATE TABLE [IF NOT EXISTS] table_name ( column1 datatype(length) column_contraint, column2 datatype(length) column_contraint, column3 datatype(length) column_contraint, table_constraints );
+
+DELETE FROM table_name
+WHERE condition;
+
+SELECT
+   select_list
+FROM
+   table_name;
+
+[22:48] Pedro Motta
+DROP TABLE IF EXISTS links; CREATE TABLE links (
+
+    id serial PRIMARY KEY, -> coluna id
+
+    url varchar(255) NOT NULL, -> coluna url
+
+    name varchar(255) NOT NULL, -> coluna name
+
+    description varchar(255), -> coluna description
+
+    rel varchar(10), -> coluna rel
+
+    last_update date DEFAULT now() -> coluna last_update
+
+); INSERT INTO   -> inserindo conteudo na tabela
+
+   links 
+
+VALUES 
+
+   ('1', 'https://www.postgresqltutorial.com', 'PostgreSQL Tutorial', 'Learn PostgreSQL fast and easy', 'follow', '2013-06-02'),
+
+   ('2', 'http://www.oreilly.com', 'O''Reilly Media', 'O''Reilly Media', 'nofollow', '2013-06-02'),
+
+   ('3', 'http://www.google.com', 'Google', 'Google', 'nofollow', '2013-06-02'),
+
+   ('4', 'http://www.yahoo.com', 'Yahoo', 'Yahoo', 'nofollow', '2013-06-02'),
+
+   ('5', 'http://www.bing.com', 'Bing', 'Bing', 'nofollow', '2013-06-02'),
+
+   ('6', 'http://www.facebook.com', 'Facebook', 'Facebook', 'nofollow', '2013-06-01'),
+
+   ('7', 'https://www.tumblr.com/', 'Tumblr', 'Tumblr', 'nofollow', '2013-06-02'),
+
+   ('8', 'http://www.postgresql.org', 'PostgreSQL', 'PostgreSQL', 'nofollow', '2013-06-02');
+

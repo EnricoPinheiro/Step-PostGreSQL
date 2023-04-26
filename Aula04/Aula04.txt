@@ -1,0 +1,38 @@
+
+
+CREATE VIEW myview AS
+ SELECT name, temp_lo, temp_hi, prcp, date, location
+ FROM weather, cities
+ WHERE city = name;
+SELECT * FROM myview;
+
+CREATE TABLE weather (
+ city varchar(80) references cities(name),
+ temp_lo int,
+ temp_hi int,
+ prcp real,
+ date date
+);
+
+CREATE TABLE cities (
+ name text,
+ population real,
+ elevation int -- (in ft)
+);
+
+CREATE TABLE capitals (
+ state char(2) UNIQUE NOT NULL
+) INHERITS (cities);
+
+INSERT INTO cities VALUES ('Sao Paulo', 4000000.00, 1000);
+
+INSERT INTO cities VALUES ('Cabo Frio', 5000.00, 0);
+
+INSERT INTO cities VALUES ('Sao Paulo', 4000000.00, 1000);
+
+CREATE VIEW visucities AS
+ SELECT name, population, elevation
+ FROM cities
+ WHERE city = name;
+SELECT * FROM visucities;
+
