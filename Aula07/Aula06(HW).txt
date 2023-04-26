@@ -1,0 +1,15 @@
+adicionar restrição a uma coluna de uma tabela -> SET NOT NULL      
+inserir a chave primaria : utilizar -> ALTER TABLE, ADD PRIMARY KEY
+
+
+
+
+CREATE TABLE produtos (
+cod_prod INTEGER,
+nome text,
+preco NUMERIC DEFAULT 10.0
+);
+
+ALTER TABLE COLUMN cod_prod SET NOT NULL;
+
+ALTER TABLE produtos ADD PRIMARY KEY (cod_prod);

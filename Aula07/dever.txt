@@ -1,0 +1,3 @@
+Especificar o nome da restrição utilizando a palavra chave CONSTRAINT Permitir apenas números positivos.
+Colunas  preenchidas com seu respectivo valor padrão
+Restrições de unicidade

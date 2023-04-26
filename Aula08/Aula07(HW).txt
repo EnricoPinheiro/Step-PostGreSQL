@@ -1,0 +1,13 @@
+CREATE TABLE calcados (
+cod_prod INTERGER UNIQUE,
+nome text,
+preco NUMERIC DEFAULT 300.00 CONSTRAINT check_preco_positivo CHECK (preco > 0)
+);
+
+INSERT INTO calcados (cod_prod, nome, preco) VALUES (1,'havaiana',DEFAULT);
+
+INSERT INTO calcados (cod_prod, nome, preco) VALUES (1,'raider',DEFAULT); -- Erro 1 --
+
+INSERT INTO calcados (cod_prod, nome, preco) VALUES (2,'papete senninha',-100.00); -- Erro 2 --
+
+INSERT INTO calcados (cod_prod, nome, preco) VALUES (2,'pargata',180.00);

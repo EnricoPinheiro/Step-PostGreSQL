@@ -1,0 +1,50 @@
+CREATE TABLE produtos (
+cod_prod INTEGER, 
+nome text,
+preco NUMERIC
+);
+
+INSERT INTO produtos (cod_prod, nome, preco) VALUES (1, 'bicicleta', 2000.00);
+
+ALTER TABLE produtos ADD CONSTRAINT produtos_pk PRIMARY KEY(cod_prod);
+
+INSERT INTO produtos (cod_prod, nome, preco) VALUES (2, 'skate', 300.00);
+
+CREATE TABLE clientes(
+id_cliente INTEGER PRIMARY KEY,
+nome varchar(100) NOT NULL,
+email varchar(100) NOT NULL UNIQUE,
+cpf VARCHAR(11) NOT NULL UNIQUE,
+endereco VARCHAR(200),
+cidade VARCHAR(100),
+estado VARCHAR(2),
+data_aniversario DATE
+);
+
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (1,'Pedro','motta@hotmail.com','12345678911','Rua a , 10','Rio de Janeiro','RJ', '1971-10-03');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (1, 'Ana Silva', 'anasilva@codandosimples.com', '12345678911', 'Rua Bahia, 10', 'Curitiba', 'PR', '1990-10-25');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (2, 'Roberto Nunes', 'ronunes@codandosimples.com', '32165498722', 'Rua Amazonas, 280', 'Campinas', 'SP', '1992-8-6');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (3, 'Paula Oliveira', 'paula123@codandosimples.com', '98765432188', 'Rua Castro Alves, 50', 'Valinhos', 'SP', '1989-10-15');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (4, 'Carlos Santos', 'carlos@codandosimples.com', '18865498732', 'Rua Santa Rita, 147', 'Barbacena', 'MG', '1985-5-20');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (5, 'Roberta Marques', 'romarques@codandosimples.com', '45691198732', 'Rua Boa Vista, 56', 'Ipatinga', 'MG', '1983-11-4');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (6, 'Júnior Soares', 'jusoares@codandosimples.com', '33372298755', 'Rua das Flores, 144', 'Londrina', 'PR', '1993-11-25');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (7, 'Guilherme Campos', 'campos123@codandosimples.com', '52861645016', 'Rua Pernambuco, 33', 'Cianorte', 'PR', '1990-5-22');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (8, 'Larissa Mello', 'lamello@codandosimples.com', '37045719035', 'Rua 10, 66', 'Niterói', 'RJ', '1991-10-8');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (9, 'Lucas da Silva', 'lusilva@codandosimples.com', '33219536093', 'Rua Santos Dumont, 1740', 'Parati', 'RJ', '1983-8-15');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (10, 'Mariana Freitas', 'mafreitas@codandosimples.com', '42171284013', 'Rua Tiradentes, 12', 'Joinville', 'SC', '1990-10-21');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (11, 'Vanessa Soares', 'van11@codandosimples.com', '43444622031', 'Rua das Orquídeas, 77', 'Blumenau', 'SC', '1979-11-28');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (12, 'Luiza Ferreira', 'luizafer@codandosimples.com', '49714415063', 'Rua Treze, 1100', 'Florianópolis', 'SC', '1977-6-15');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (13, 'Marcos Souza', 'marco@codandosimples.com', '11971259063', 'Rua Portes, 345', 'Coxim', 'MS', '1976-7-23');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (14, 'Sebastião Araújo', 'bastiao@codandosimples.com', '49691363003', 'Avenida Brasil, 67', 'Dourados', 'MS', '1975-4-17');
+INSERT INTO clientes (id_cliente, nome, email, cpf, endereco, cidade, estado, data_aniversario) VALUES (15, 'Francisco da Silva', 'chico@codandosimples.com', '60117796034', 'Avenida da Saudade, 788', 'Bataguassu', 'MS', '1974-8-5');
+
+CREATE TABLE pedidos (
+cod_pedido INTEGER PRIMARY KEY,
+cliente_id INTEGER FOREIGN KEY,
+status VARCHAR(30),
+data DATE, 
+endereco_entrega VARCHAR(200)
+);
+
+
+

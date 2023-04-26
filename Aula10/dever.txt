@@ -1,0 +1,3 @@
+Estudar os filtros : or , and , >=, <=, asc, desc. Relacionamento : Um-Para-Um (One-to-One)
+Um-Para-Muitos (One-to-Many)
+Muitos-Para-Muitos (Many-to-Many)

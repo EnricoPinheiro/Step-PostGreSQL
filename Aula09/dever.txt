@@ -1,0 +1,9 @@
+Rever o conceito Chave Primaria e chave estrangeira
+A chave primaria indica ? 
+Garante a consistência de dados em ?
+
+• Não permitir a exclusão de um produto referenciado
+• Excluir o pedido também 
+• Algo mais? 
+
+Criar as tabelas clientes e produtos utilizando : ALTER TABLE , ADD CONSTRAINT e FOREIGN KEY

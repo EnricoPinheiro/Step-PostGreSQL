@@ -1,0 +1,26 @@
+Aula07
+
+=================================
+
+CREATE TABLE produtosB(
+cod_prod INTEGER,
+nome TEXT,
+preco NUMERIC CHECK(preco > 0),
+preco_com_desconto NUMERIC CHECK(preco_com_desconto >0),
+CHECK (preco > preco_com_desconto)
+);
+
+
+ALTER TABLE produtosB ADD CONSTRAINT check_com_desconto CHECK(preco_com_desconto >0);
+
+INSERT INTO produtosB VALUES (1, 'Agua', 10.0, 8.0);
+INSERT INTO produtosB VALUES (2, 'Coca', 12.0, 9.0);
+INSERT INTO produtosB VALUES (3, 'Latão', 15.0, 12.0);
+
+ALTER TABLE produtosB ADD COLUMN descricao text;
+
+ALTER TABLE produtosB ADD COLUMN validade date;
+
+INSERT INTO produtosB VALUES (4, 'Pa', 15.0, 12.0,'sei la mano', '2022-07-20');
+INSERT INTO produtosB VALUES (5, 'Ta', 18.0, 15.0,'sei iiihaaa', '2022-09-22');
+INSERT INTO produtosB VALUES (6, 'Quada', 20.0, 15.0,'sei wow', '2022-08-23');

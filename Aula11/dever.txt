@@ -1,0 +1,1 @@
+Aplicar os conceitos de Junção, sum e BETWEEN, na modelagem da aula
